@@ -19,14 +19,14 @@
 Создать каталог ansible 
 нам нужно поднять присланный нам Vagrantfile, с помощью команды `vagrant up`
 
-Для подключения к хосту nginx нам необходимо передать множество параметров. Узнаем эти параметры с помощью vagrant ssh-config.
+Для подключения к хосту nginx нам необходимо передать множество параметров. Узнаем эти параметры с помощью `vagrant ssh-config`.
 ---
 Inventory
 ---
 Чтобы создать свой перый inventory файл, нам нужно прописать команду nano inventory, далее, внутри этого файла нам надо написать некие параметры:
 
-[webservers]
-nginx ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_private_key_file=/home/alex/os_labs2/lab1/.vagrant/machines/nginx/virtualbox/private_key
+`[webservers]
+nginx ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_private_key_file=/home/alex/os_labs2/lab1/.vagrant/machines/nginx/virtualbox/private_key`
 
 У каждого пользователя параметры индивидуальны, мы указываем свой порт, свой путь к приватному ключу ssh и тд. Все это мы узнали после команды vagrant ssh-config.
 
@@ -34,15 +34,15 @@ nginx ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_priv
 Далее, с помощью команды cat inventory выводим записанный нами в файле скрипт.
 
 И наконец, убеждаемся в том, что Ansible может управлять нашим хостом. Делаем это с помощью команды:
-ansible nginx -i inventory -m ping, результат должен быть такой:
+`ansible nginx -i inventory -m ping`, результат должен быть такой:
 
-nginx | SUCCESS => {
+`nginx | SUCCESS => {
 "ansible_facts": {
 "discovered_interpreter_python": "/usr/bin/python"
 },
 "changed": false,
 "ping": "pong"
-}
+}`
  Если результат не SUCCESS, значит ошибка в inventory.
 
 ---
@@ -51,27 +51,27 @@ ansible.cfg
 
 Тааак, чтобы нам каждый раз указывать наш инвентори файл, создадим файл конфигурации ansible.cfg. Все так же, как и в прошлом пункте, создаем, записываем туда скрипт:
 
-[defaults]
+`[defaults]
 inventory = inventory
 remote_user= vagrant
 host_key_checking = False
-transport=smart
+transport=smart`
 
 Потом, снова убеждаемся, что управляемый хост доступен, только теперь без явного указания инвентори файла:
 
-ansible -m ping nginx, получаем ответ:
+`ansible -m ping nginx`, получаем ответ:
 
 
-nginx | SUCCESS => {
+`nginx | SUCCESS => {
 "ansible_facts": {
 "discovered_interpreter_python": "/usr/bin/python"
 },
 "changed": false,
 "ping":"pong"
-}
+}`
 
 ---
-Playbook eprl
+Playbook epel
 ---
 
 Напишем простой Playbook, который будет выполнять установку пакета epel-release. Создаем файл epel.yml со следующим содержимым:
@@ -86,9 +86,9 @@ yum:
 name: epel-release
 state: present
 
-После чего запусти выполнение Playbook, с помощью команды ansible-playbook epel.yml, должны получить:
+После чего запусти выполнение Playbook, с помощью команды `ansible-playbook epel.yml`, должны получить:
 
-PLAY [Install EPEL Repo]
+`PLAY [Install EPEL Repo]
 **************************************************************
 TASK [Gathering Facts]
 ****************************************************************
@@ -101,7 +101,7 @@ PLAY RECAP
 **********
 nginx : ok=2
 changed=0 unreachable=0 failed=0 skipped=
-0 rescued=0 ignored=0
+0 rescued=0 ignored=0`
 
 ---
 Playbook nginx
@@ -112,8 +112,9 @@ Playbook nginx
 Шаблон
 ---
 
-cat nginx.conf.j2
-events {
+`cat nginx.conf.j2`
+
+`events {
 worker_connections 1024;
 }
 http {
@@ -124,7 +125,7 @@ root /usr/share/nginx/html;
 location / {
 }
 }
-}
+}`
 
 ---
 Handlers
@@ -134,7 +135,7 @@ Handlers
 для рестарта nginx не при любом старте плейбука, а только при изменения в конфигурации.
 Для рестарта сервисов применяется модуль systemd, документация к модулю
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
-[user@fedora ansible]$ cat nginx.yml
+[user@fedora ansible]$ `cat nginx.yml`
 ---
 - name: Install nginx package from epel repo
 hosts: webservers
@@ -176,7 +177,7 @@ enabled: yes
 
 Теперь проверяем на работу Nginx c помощью команды:
 
-vagrant ssh -c "ip addr show"
+`vagrant ssh -c "ip addr show"`
 
 после выводв этой команды, нам нужно найти там публичный ip-адресс
 
@@ -184,7 +185,7 @@ vagrant ssh -c "ip addr show"
 
 мы проверяем отвечает этот ip или нет, с помощью команды:
 
-http://ip_address:8080
+`http://ip_address:8080`
 
 Если вы все сделали верно, то должно вывести веб-страничку
 
