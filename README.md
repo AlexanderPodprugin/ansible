@@ -1,4 +1,5 @@
 Первая лаба:
+---
 
 Задача: попрактиковаться в написании плейбука, со следующими условиями:
 -Подготовить стенд на vagrant;
@@ -7,20 +8,20 @@
 -добавить в плейбук копирование новой конфигурации сервиса на стенд 
 -должен быть использован мехенизм notify для рестарта nginx после установки или изменения конфигурации
 
----
 Приступим
 ---
 Установка ansible
 ---
 Сначала нам нужно проверить версию питона и версию ansible, команада: `python -V и ansible --version`
----
+
 Подготовка стенда 
 ---
-Создать каталог ansible 
-нам нужно поднять присланный нам Vagrantfile, с помощью команды `vagrant up`
+Создать каталог ansible
+---
+Нам нужно поднять присланный нам Vagrantfile, с помощью команды `vagrant up`
 
 Для подключения к хосту nginx нам необходимо передать множество параметров. Узнаем эти параметры с помощью `vagrant ssh-config`.
----
+
 Inventory
 ---
 Чтобы создать свой перый inventory файл, нам нужно прописать команду nano inventory, далее, внутри этого файла нам надо написать некие параметры:
@@ -45,7 +46,6 @@ nginx ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_priv
 }`
  Если результат не SUCCESS, значит ошибка в inventory.
 
----
 ansible.cfg
 ---
 
@@ -70,13 +70,11 @@ transport=smart`
 "ping":"pong"
 }`
 
----
 Playbook epel
 ---
 
 Напишем простой Playbook, который будет выполнять установку пакета epel-release. Создаем файл epel.yml со следующим содержимым:
 
----
 - name: Install EPEL Repo
 hosts: webservers
 become: true
@@ -103,12 +101,10 @@ nginx : ok=2
 changed=0 unreachable=0 failed=0 skipped=
 0 rescued=0 ignored=0`
 
----
 Playbook nginx
 ---
 Повторяем как в пунктах выше
 
----
 Шаблон
 ---
 
@@ -127,7 +123,6 @@ location / {
 }
 }`
 
----
 Handlers
 ---
 
@@ -136,8 +131,8 @@ Handlers
 Для рестарта сервисов применяется модуль systemd, документация к модулю
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
 [user@fedora ansible]$ `cat nginx.yml`
----
-- name: Install nginx package from epel repo
+
+`- name: Install nginx package from epel repo
 hosts: webservers
 become: true
 vars:
@@ -169,9 +164,8 @@ handlers:
 systemd:
 name: nginx
 state: reconfigured
-enabled: yes
+enabled: yes`
 
----
 Проверка 
 ---
 
@@ -183,7 +177,7 @@ enabled: yes
 
 И наконец:
 
-мы проверяем отвечает этот ip или нет, с помощью команды:
+мы проверяем отвечает этот ip или нет:
 
 (http://197.20.80.1:8080/ "Ваш публичный ip")
 
