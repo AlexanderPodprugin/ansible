@@ -185,7 +185,8 @@ enabled: yes
 (http://197.20.80.1:8080/ "Ваш публичный ip")
 
 Если вы все сделали верно, то должно вывести веб-страничку:
-![]()
+
+![](https://github.com/AlexanderPodprugin/ansible2/blob/main/web1.jpg)
 
 
 
