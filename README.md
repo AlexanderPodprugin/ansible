@@ -10,14 +10,17 @@
 
 Приступим
 ---
+
 Установка ansible
 ---
+
 Сначала нам нужно проверить версию питона и версию ansible, команада: `python -V и ansible --version`
 
 Подготовка стенда 
 ---
-Создать каталог ansible
----
+
+Создать каталог ansible:
+
 Нам нужно поднять присланный нам Vagrantfile, с помощью команды `vagrant up`
 
 Для подключения к хосту nginx нам необходимо передать множество параметров. Узнаем эти параметры с помощью `vagrant ssh-config`.
@@ -132,7 +135,7 @@ Handlers
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
 [user@fedora ansible]$ `cat nginx.yml`
 
-`- name: Install nginx package from epel repo
+- name: Install nginx package from epel repo
 hosts: webservers
 become: true
 vars:
@@ -164,7 +167,7 @@ handlers:
 systemd:
 name: nginx
 state: reconfigured
-enabled: yes`
+enabled: yes
 
 Проверка 
 ---
